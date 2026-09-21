@@ -871,6 +871,52 @@ tbody tr:last-child td { border-bottom: none; }
     border-color: var(--danger);
 }
 
+.btn-approve {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 7px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-approve:hover {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: var(--success);
+}
+
+.btn-edit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cyan);
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    padding: 7px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-edit:hover {
+    background: rgba(6, 182, 212, 0.25);
+    border-color: var(--cyan);
+}
+
 /* ═══════════════════════════════════════════════════════════
    LAYOUT GRIDS
 ═══════════════════════════════════════════════════════════ */

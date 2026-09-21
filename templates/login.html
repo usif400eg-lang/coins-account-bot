@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>تسجيل الدخول — RODRIGO SHOP</title>
+    <meta name="theme-color" content="#07071a">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 20px;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(14, 14, 35, 0.9);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.4s ease;
+        }
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), var(--cyan), transparent);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-icon {
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            box-shadow: 0 0 24px rgba(124, 58, 237, 0.45);
+        }
+        .login-header h1 {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .login-header p {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+        }
+        .error-alert {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-left: 44px;
+        }
+        .toggle-password {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .toggle-password:hover {
+            color: var(--text);
+        }
+        .login-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-icon">⚡</div>
+            <h1>لوحة الإدارة</h1>
+            <p>سجّل الدخول للوصول إلى لوحة التحكم والطلبات</p>
+        </div>
+
+        {% if error %}
+        <div class="error-alert">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="pwd">كلمة مرور الإدارة (Admin Password)</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="pwd" placeholder="••••••••" required autofocus>
+                    <i class="fa-solid fa-eye toggle-password" id="togglePwd" onclick="togglePass()"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" style="margin-top: 10px;">
+                <i class="fa-solid fa-right-to-bracket"></i> دخول إلى لوحة التحكم
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>RODRIGO eFootball Hub · الإصدار 2.5</p>
+        </div>
+    </div>
+
+    <script>
+        function togglePass() {
+            const input = document.getElementById("pwd");
+            const icon = document.getElementById("togglePwd");
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+</body>
+</html>

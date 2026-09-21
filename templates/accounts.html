@@ -96,11 +96,16 @@
                             </span>
                         </td>
                         <td>
-                            <a href="/delete_account/{{ acc.id }}"
-                               class="btn-delete"
-                               onclick="return confirm('هل تريد حذف هذا الحساب؟')">
-                                <i class="fa-solid fa-trash"></i> حذف
-                            </a>
+                            <div style="display: flex; gap: 6px; flex-wrap: nowrap;">
+                                <a href="/accounts/edit/{{ acc.id }}" class="btn-edit" title="تعديل الحساب">
+                                    <i class="fa-solid fa-pen-to-square"></i> تعديل
+                                </a>
+                                <a href="/delete_account/{{ acc.id }}"
+                                   class="btn-delete"
+                                   onclick="return confirm('هل تريد حذف هذا الحساب؟')">
+                                    <i class="fa-solid fa-trash"></i> حذف
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% else %}

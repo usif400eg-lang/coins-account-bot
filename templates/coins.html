@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}شحن الكوينز — RODRIGO SHOP{% endblock %}
+{% block page_title %}باقات شحن الكوينز{% endblock %}
+{% block page_subtitle %}إضافة وإدارة باقات كوينز eFootball المعروضة في البوت{% endblock %}
+
+{% block content %}
+<div class="grid-2">
+
+    <!-- فورم إضافة باقة جديدة -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-coins" style="color: var(--gold);"></i>
+            إضافة باقة كوينز جديدة
+        </div>
+        <form action="/add_coins" method="POST">
+
+            <div class="form-group">
+                <label>اسم / عنوان الباقة</label>
+                <input type="text" name="title" placeholder="مثال: 550 كوينز 🔥" required>
+            </div>
+
+            <div class="form-group">
+                <label>عدد الكوينز الفعلي (Coins Amount)</label>
+                <input type="number" name="coins_amount" placeholder="550" required>
+            </div>
+
+            <div class="form-group">
+                <label>السعر (بالجنيه المصري EGP)</label>
+                <input type="number" step="0.01" name="price_egp" placeholder="260.00" required>
+            </div>
+
+            <div class="form-group">
+                <label>وصف مختصر / شارة (اختياري)</label>
+                <input type="text" name="description" placeholder="مثال: العرض الأكثر طلباً - شحن رسمي">
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fa-solid fa-plus-circle"></i> إضافة الباقة للمتجر
+            </button>
+        </form>
+    </div>
+
+    <!-- جدول باقات الكوينز -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-layer-group"></i>
+            الباقات المتاحة حالياً ({{ packages|length }})
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الباقة</th>
+                        <th>عدد الكوينز</th>
+                        <th>السعر (EGP)</th>
+                        <th>الدولار / الدينار</th>
+                        <th>الوصف</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pkg in packages %}
+                    <tr>
+                        <td style="font-weight: 800; color: var(--gold);">
+                            <i class="fa-solid fa-coins"></i> {{ pkg.title }}
+                        </td>
+                        <td style="font-weight: 700; color: var(--cyan);">
+                            {{ "{:,}".format(pkg.coins_amount) }}
+                        </td>
+                        <td>
+                            <span style="color: #10b981; font-weight: 800;">{{ pkg.price_egp }} ج.م</span>
+                        </td>
+                        <td style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+                            <div>${{ (pkg.price_egp * 0.021)|round(1) }} USD</div>
+                            <div style="color: var(--gold);">{{ "{:,}".format((pkg.price_egp * 28)|int) }} IQD</div>
+                        </td>
+                        <td style="font-size: 0.82rem; color: var(--text-soft);">
+                            {{ pkg.description or '—' }}
+                        </td>
+                        <td>
+                            <a href="/delete_coins/{{ pkg.id }}"
+                               class="btn-delete"
+                               onclick="return confirm('هل أنت متأكد من حذف هذه الباقة؟')">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-coins"></i>
+                                <p>لا توجد باقات كوينز مضافة بعد.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

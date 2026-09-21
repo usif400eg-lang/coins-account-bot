@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}تعديل الحساب — RODRIGO SHOP{% endblock %}
+{% block page_title %}تعديل بيانات الحساب{% endblock %}
+{% block page_subtitle %}تحديث السعر أو الوصف أو بيانات الدخول للحساب #{{ account.id }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 0 auto;">
+
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-pen-to-square"></i>
+            تعديل: {{ account.title }}
+        </div>
+
+        <form action="/accounts/edit/{{ account.id }}" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>عنوان الحساب / المنتج</label>
+                <input type="text" name="title" value="{{ account.title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>تفاصيل ووصف الحساب</label>
+                <textarea name="details" rows="3" required>{{ account.details }}</textarea>
+            </div>
+
+            <div class="grid-2" style="grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 0;">
+                <div class="form-group">
+                    <label>السعر (ج.م)</label>
+                    <input type="number" step="0.01" name="price_egp" value="{{ account.price_egp }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>حالة الحساب</label>
+                    <select name="status">
+                        <option value="available" {% if account.status == 'available' %}selected{% endif %}>✅ متاح للبيع</option>
+                        <option value="sold" {% if account.status == 'sold' %}selected{% endif %}>🔴 مباع</option>
+                        <option value="reserved" {% if account.status == 'reserved' %}selected{% endif %}>⏳ محجوز مؤقتاً</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>البيانات السرية (الإيميل والباسورد)</label>
+                <input type="text" name="credentials" value="{{ account.credentials }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>صورة التشكيلة (اختياري لتغيير الصورة الحالية)</label>
+                {% if account.image_path %}
+                <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+                    <img src="/{{ account.image_path }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--card-border);">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">الصورة الحالية مستخدمة. إذا لم تختر ملفاً جديداً ستبقى كما هي.</span>
+                </div>
+                {% endif %}
+                <div class="image-upload-box" id="upload-box" onclick="document.getElementById('image-input').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="upload-text">اضغط لاختيار صورة جديدة أو اسحبها هنا</span>
+                    <img id="preview-img" src="" alt="preview">
+                </div>
+                <input type="file" name="image" id="image-input" accept="image/*" style="display:none">
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn-submit" style="flex: 2;">
+                    <i class="fa-solid fa-check"></i> حفظ التعديلات
+                </button>
+                <a href="/accounts" class="filter-btn" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm);">
+                    إلغاء
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+{% endblock %}

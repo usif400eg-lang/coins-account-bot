@@ -25,9 +25,14 @@
                 </div>
             </div>
         </div>
-        <div class="header-badge mobile-badge">
-            <span class="dot"></span>
-            نشط
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="header-badge mobile-badge">
+                <span class="dot"></span>
+                نشط
+            </div>
+            <a href="/logout" title="تسجيل الخروج" style="color: var(--danger); font-size: 1.05rem; padding: 6px; display: flex; align-items: center;" onclick="return confirm('هل تريد تسجيل الخروج من لوحة الإدارة؟')">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
         </div>
     </header>
 
@@ -63,6 +68,12 @@
                 </a>
             </li>
             <li>
+                <a href="/coins" class="{% if active_page == 'coins' %}active{% endif %}">
+                    <i class="fa-solid fa-coins"></i>
+                    <span>شحن الكوينز</span>
+                </a>
+            </li>
+            <li>
                 <a href="/orders" class="{% if active_page == 'orders' %}active{% endif %}">
                     <i class="fa-solid fa-receipt"></i>
                     <span>الطلبات</span>
@@ -88,6 +99,9 @@
         <div class="sidebar-footer">
             <p>متجر <span>RODRIGO</span> eFootball</p>
             <p style="margin-top: 4px; font-size: 0.72rem; color: var(--text-muted);">لوحة تحكم الإصدار 2.5</p>
+            <a href="/logout" style="display: inline-flex; align-items: center; gap: 6px; color: var(--danger); text-decoration: none; margin-top: 12px; font-weight: 700; font-size: 0.82rem;" onclick="return confirm('هل تريد تسجيل الخروج؟')">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
+            </a>
         </div>
     </aside>
 
@@ -98,9 +112,14 @@
                 <h1>{% block page_title %}{% endblock %}</h1>
                 <p>{% block page_subtitle %}{% endblock %}</p>
             </div>
-            <div class="header-badge desktop-badge">
-                <span class="dot"></span>
-                البوت متصل ويعمل
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="header-badge desktop-badge">
+                    <span class="dot"></span>
+                    البوت متصل ويعمل
+                </div>
+                <a href="/logout" class="filter-btn desktop-badge" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.3); text-decoration: none;" onclick="return confirm('هل تريد تسجيل الخروج؟')">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
+                </a>
             </div>
         </div>
 
@@ -117,6 +136,10 @@
             <i class="fa-solid fa-gamepad"></i>
             <span>الحسابات</span>
         </a>
+        <a href="/coins" class="bottom-nav-item {% if active_page == 'coins' %}active{% endif %}">
+            <i class="fa-solid fa-coins"></i>
+            <span>الكوينز</span>
+        </a>
         <a href="/orders" class="bottom-nav-item {% if active_page == 'orders' %}active{% endif %}">
             <div class="bottom-nav-icon-wrap">
                 <i class="fa-solid fa-receipt"></i>
@@ -129,10 +152,6 @@
         <a href="/payments" class="bottom-nav-item {% if active_page == 'payments' %}active{% endif %}">
             <i class="fa-solid fa-wallet"></i>
             <span>الدفع</span>
-        </a>
-        <a href="/admins" class="bottom-nav-item {% if active_page == 'admins' %}active{% endif %}">
-            <i class="fa-solid fa-user-shield"></i>
-            <span>الأدمنز</span>
         </a>
     </nav>
 
