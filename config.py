@@ -3,7 +3,7 @@ import os
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "8334170544:AAG3c0Qyxw5LhvaxY_ckEa1RvXK1Kyeovfc")
 
 # Dashboard Security
-DASHBOARD_PASSWORD = os.environ.get("DASHBOARD_PASSWORD", "admin123")
+DASHBOARD_PASSWORD = os.environ.get("DASHBOARD_PASSWORD", "Usif2007")
 SECRET_KEY = os.environ.get("SECRET_KEY", "rodrigo-coins-bot-secret-key-2026")
 
 # Duijon Admin-er Telegram User ID (Numeric ID)

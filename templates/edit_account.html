@@ -33,9 +33,11 @@
                 <div class="form-group">
                     <label>حالة الحساب</label>
                     <select name="status">
-                        <option value="available" {% if account.status == 'available' %}selected{% endif %}>✅ متاح للبيع</option>
-                        <option value="sold" {% if account.status == 'sold' %}selected{% endif %}>🔴 مباع</option>
-                        <option value="reserved" {% if account.status == 'reserved' %}selected{% endif %}>⏳ محجوز مؤقتاً</option>
+                        <option value="available" {% if account.status=='available' %}selected{% endif %}>✅ متاح للبيع
+                        </option>
+                        <option value="sold" {% if account.status=='sold' %}selected{% endif %}>🔴 مباع</option>
+                        <option value="reserved" {% if account.status=='reserved' %}selected{% endif %}>⏳ محجوز مؤقتاً
+                        </option>
                     </select>
                 </div>
             </div>
@@ -48,9 +50,12 @@
             <div class="form-group">
                 <label>صورة التشكيلة (اختياري لتغيير الصورة الحالية)</label>
                 {% if account.image_path %}
-                <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
-                    <img src="/{{ account.image_path }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--card-border);">
-                    <span style="font-size: 0.82rem; color: var(--text-muted);">الصورة الحالية مستخدمة. إذا لم تختر ملفاً جديداً ستبقى كما هي.</span>
+                <div
+                    style="margin-bottom: 10px; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px;">
+                    <img src="/{{ account.image_path }}"
+                        style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--card-border);">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">الصورة الحالية مستخدمة. إذا لم تختر
+                        ملفاً جديداً ستبقى كما هي.</span>
                 </div>
                 {% endif %}
                 <div class="image-upload-box" id="upload-box" onclick="document.getElementById('image-input').click()">
@@ -65,7 +70,8 @@
                 <button type="submit" class="btn-submit" style="flex: 2;">
                     <i class="fa-solid fa-check"></i> حفظ التعديلات
                 </button>
-                <a href="/accounts" class="filter-btn" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm);">
+                <a href="/accounts" class="filter-btn"
+                    style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm);">
                     إلغاء
                 </a>
             </div>

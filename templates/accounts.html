@@ -80,9 +80,11 @@
                     <tr>
                         <td>
                             {% if acc.image_path %}
-                                <img src="/{{ acc.image_path }}" class="acc-thumb" alt="صورة">
+                            <img src="/{{ acc.image_path }}" class="acc-thumb" alt="صورة">
                             {% else %}
-                                <div style="width:46px;height:46px;background:rgba(124,58,237,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🎮</div>
+                            <div
+                                style="width:46px;height:46px;background:rgba(124,58,237,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                                🎮</div>
                             {% endif %}
                         </td>
                         <td style="font-weight: 700; max-width: 180px;">{{ acc.title }}</td>
@@ -100,9 +102,8 @@
                                 <a href="/accounts/edit/{{ acc.id }}" class="btn-edit" title="تعديل الحساب">
                                     <i class="fa-solid fa-pen-to-square"></i> تعديل
                                 </a>
-                                <a href="/delete_account/{{ acc.id }}"
-                                   class="btn-delete"
-                                   onclick="return confirm('هل تريد حذف هذا الحساب؟')">
+                                <a href="/delete_account/{{ acc.id }}" class="btn-delete"
+                                    onclick="return confirm('هل تريد حذف هذا الحساب؟')">
                                     <i class="fa-solid fa-trash"></i> حذف
                                 </a>
                             </div>
