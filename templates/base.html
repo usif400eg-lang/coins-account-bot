@@ -2,41 +2,70 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>{% block title %}RODRIGO SHOP{% endblock %}</title>
     <meta name="description" content="لوحة إدارة متجر RODRIGO eFootball — إدارة الحسابات والطلبات وطرق الدفع">
+    <meta name="theme-color" content="#07071a">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="brand-icon">⚡</div>
-            <div class="brand-text">
-                <span class="brand-name">RODRIGO HUB</span>
-                <span class="brand-sub">eFootball Shop</span>
+    <!-- Mobile Top Header Bar (Shown on phones and tablets) -->
+    <header class="mobile-topbar">
+        <div class="mobile-topbar-left">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="فتح القائمة">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+            <div class="mobile-brand">
+                <div class="mobile-brand-icon">⚡</div>
+                <div class="mobile-brand-text">
+                    <span class="mobile-brand-name">RODRIGO HUB</span>
+                    <span class="mobile-brand-sub">eFootball</span>
+                </div>
             </div>
+        </div>
+        <div class="header-badge mobile-badge">
+            <span class="dot"></span>
+            نشط
+        </div>
+    </header>
+
+    <!-- Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar / Navigation Drawer -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-left">
+                <div class="brand-icon">⚡</div>
+                <div class="brand-text">
+                    <span class="brand-name">RODRIGO HUB</span>
+                    <span class="brand-sub">eFootball Shop</span>
+                </div>
+            </div>
+            <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="إغلاق القائمة">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <ul class="nav-links">
             <li>
                 <a href="/" class="{% if active_page == 'home' %}active{% endif %}">
                     <i class="fa-solid fa-chart-line"></i>
-                    الإحصائيات
+                    <span>الإحصائيات</span>
                 </a>
             </li>
             <li>
                 <a href="/accounts" class="{% if active_page == 'accounts' %}active{% endif %}">
                     <i class="fa-solid fa-gamepad"></i>
-                    الحسابات والمنتجات
+                    <span>الحسابات والمنتجات</span>
                 </a>
             </li>
             <li>
                 <a href="/orders" class="{% if active_page == 'orders' %}active{% endif %}">
                     <i class="fa-solid fa-receipt"></i>
-                    الطلبات
+                    <span>الطلبات</span>
                     {% if pending_count and pending_count > 0 %}
                         <span class="nav-badge">{{ pending_count }}</span>
                     {% endif %}
@@ -45,40 +74,69 @@
             <li>
                 <a href="/payments" class="{% if active_page == 'payments' %}active{% endif %}">
                     <i class="fa-solid fa-wallet"></i>
-                    طرق الدفع
+                    <span>طرق الدفع</span>
                 </a>
             </li>
             <li>
                 <a href="/admins" class="{% if active_page == 'admins' %}active{% endif %}">
                     <i class="fa-solid fa-user-shield"></i>
-                    إدارة الأدمنز
+                    <span>إدارة الأدمنز</span>
                 </a>
             </li>
         </ul>
 
         <div class="sidebar-footer">
             <p>متجر <span>RODRIGO</span> eFootball</p>
-            <p style="margin-top: 4px; font-size: 0.7rem;">Dashboard v2.0</p>
+            <p style="margin-top: 4px; font-size: 0.72rem; color: var(--text-muted);">لوحة تحكم الإصدار 2.5</p>
         </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Wrapper -->
     <main class="main-wrapper fade-in">
         <div class="top-header">
             <div class="page-title">
                 <h1>{% block page_title %}{% endblock %}</h1>
                 <p>{% block page_subtitle %}{% endblock %}</p>
             </div>
-            <div class="header-badge">
+            <div class="header-badge desktop-badge">
                 <span class="dot"></span>
-                البوت يعمل
+                البوت متصل ويعمل
             </div>
         </div>
 
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Toast Container -->
+    <!-- Bottom Navigation Dock for Mobile Devices (<= 768px) -->
+    <nav class="bottom-nav">
+        <a href="/" class="bottom-nav-item {% if active_page == 'home' %}active{% endif %}">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="/accounts" class="bottom-nav-item {% if active_page == 'accounts' %}active{% endif %}">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>الحسابات</span>
+        </a>
+        <a href="/orders" class="bottom-nav-item {% if active_page == 'orders' %}active{% endif %}">
+            <div class="bottom-nav-icon-wrap">
+                <i class="fa-solid fa-receipt"></i>
+                {% if pending_count and pending_count > 0 %}
+                    <span class="bottom-nav-badge">{{ pending_count }}</span>
+                {% endif %}
+            </div>
+            <span>الطلبات</span>
+        </a>
+        <a href="/payments" class="bottom-nav-item {% if active_page == 'payments' %}active{% endif %}">
+            <i class="fa-solid fa-wallet"></i>
+            <span>الدفع</span>
+        </a>
+        <a href="/admins" class="bottom-nav-item {% if active_page == 'admins' %}active{% endif %}">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>الأدمنز</span>
+        </a>
+    </nav>
+
+    <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Main JS -->

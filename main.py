@@ -29,6 +29,14 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.context_processor
+def inject_global_data():
+    try:
+        stats = db.get_stats()
+        return {'pending_count': stats.get('pending_orders', 0)}
+    except Exception:
+        return {'pending_count': 0}
+
 # ── Routes ──────────────────────────────────────────────────────────────────
 
 @app.route('/')

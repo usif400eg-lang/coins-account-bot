@@ -1,6 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // ═══════════════════════════════════════════════
+    // 0. Mobile Drawer & Sidebar Toggle
+    // ═══════════════════════════════════════════════
+    const sidebar = document.getElementById("sidebar");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const sidebarCloseBtn = document.getElementById("sidebarCloseBtn");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+    function openSidebar() {
+        if (sidebar) sidebar.classList.add("open");
+        if (sidebarOverlay) sidebarOverlay.classList.add("active");
+        document.body.style.overflow = "hidden"; // Prevent background scrolling
+    }
+
+    function closeSidebar() {
+        if (sidebar) sidebar.classList.remove("open");
+        if (sidebarOverlay) sidebarOverlay.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener("click", openSidebar);
+    }
+
+    if (sidebarCloseBtn) {
+        sidebarCloseBtn.addEventListener("click", closeSidebar);
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", closeSidebar);
+    }
+
+    // Close drawer when pressing Escape
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeSidebar();
+    });
+
+    // Close drawer when clicking any link inside sidebar
+    document.querySelectorAll(".nav-links a").forEach(link => {
+        link.addEventListener("click", () => {
+            if (window.innerWidth <= 900) {
+                closeSidebar();
+            }
+        });
+    });
+
+    // ═══════════════════════════════════════════════
     // 1. Image Upload — Drag & Drop + Preview
     // ═══════════════════════════════════════════════
     const uploadBox = document.querySelector(".image-upload-box");
@@ -54,7 +100,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ═══════════════════════════════════════════════
-    // 2. Table Live Search
+    // 2. Animated Counters for Stats
+    // ═══════════════════════════════════════════════
+    const counters = document.querySelectorAll('.counter, .counter-float');
+    counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target') || '0');
+        const isFloat = counter.classList.contains('counter-float');
+        const duration = 900;
+        const startTime = performance.now();
+
+        function updateCount(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = target * easeOut;
+
+            if (isFloat) {
+                counter.innerText = current.toFixed(2);
+            } else {
+                counter.innerText = Math.floor(current).toLocaleString();
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCount);
+            } else {
+                counter.innerText = isFloat ? target.toFixed(2) : target.toLocaleString();
+            }
+        }
+        requestAnimationFrame(updateCount);
+    });
+
+    // ═══════════════════════════════════════════════
+    // 3. Table Live Search
     // ═══════════════════════════════════════════════
     const searchInput = document.getElementById("table-search");
     if (searchInput) {
@@ -69,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ═══════════════════════════════════════════════
-    // 3. Toast Notification System
+    // 4. Toast Notification System
     // ═══════════════════════════════════════════════
     window.showToast = function(msg, type = 'success') {
         const container = document.getElementById('toastContainer');
@@ -82,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // ═══════════════════════════════════════════════
-    // 4. Confirm Delete with Toast Feedback
+    // 5. Confirm Delete with Toast Feedback
     // ═══════════════════════════════════════════════
     document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -96,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ═══════════════════════════════════════════════
-    // 5. Form Submit Feedback
+    // 6. Form Submit Feedback
     // ═══════════════════════════════════════════════
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', () => {
@@ -109,10 +187,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ═══════════════════════════════════════════════
-    // 6. Row Hover Micro Animation
+    // 7. Orders Filter Functionality
     // ═══════════════════════════════════════════════
-    document.querySelectorAll('tbody tr').forEach(row => {
-        row.style.transition = 'background 0.2s ease';
-    });
+    window.filterOrders = function(status, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const rows = document.querySelectorAll('#orders-table tbody tr');
+        rows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status');
+            if (status === 'all' || rowStatus === status) {
+                row.style.display = '';
+                row.style.animation = 'fadeIn 0.25s ease';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    };
 
 });
