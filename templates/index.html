@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}الرئيسية — RODRIGO SHOP{% endblock %}
+{% block page_title %}لوحة التحكم{% endblock %}
+{% block page_subtitle %}نظرة عامة على أداء المتجر{% endblock %}
+
+{% block content %}
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+
+    <!-- إجمالي الحسابات -->
+    <div class="stat-card purple">
+        <div class="stat-icon"><i class="fa-solid fa-gamepad"></i></div>
+        <div class="stat-value counter" data-target="{{ stats.get('total', 0) }}">0</div>
+        <div class="stat-label">إجمالي الحسابات</div>
+    </div>
+
+    <!-- المتاحة -->
+    <div class="stat-card cyan">
+        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-value counter" data-target="{{ stats.get('available', 0) }}">0</div>
+        <div class="stat-label">حسابات متاحة</div>
+    </div>
+
+    <!-- المباعة -->
+    <div class="stat-card red">
+        <div class="stat-icon"><i class="fa-solid fa-cart-check"></i></div>
+        <div class="stat-value counter" data-target="{{ stats.get('sold', 0) }}">0</div>
+        <div class="stat-label">حسابات مباعة</div>
+    </div>
+
+    <!-- طلبات معلقة -->
+    <div class="stat-card gold">
+        <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="stat-value counter" data-target="{{ stats.get('pending_orders', 0) }}">0</div>
+        <div class="stat-label">طلبات معلقة</div>
+    </div>
+
+    <!-- الأرباح -->
+    <div class="stat-card green" style="grid-column: span 1;">
+        <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="revenue-row">
+            <span class="revenue-amount counter-float" data-target="{{ stats.get('revenue_egp', 0) }}">0</span>
+            <span class="revenue-cur">ج.م</span>
+        </div>
+        <div class="revenue-sub">
+            <span style="color: #22d3ee;">${{ stats.get('revenue_usd', 0) }} <small>USD</small></span>
+            <span style="color: #f59e0b;">{{ "{:,}".format(stats.get('revenue_iqd', 0)) }} <small>IQD</small></span>
+        </div>
+        <div class="stat-label" style="margin-top: 8px;">إجمالي الأرباح</div>
+    </div>
+
+</div>
+
+<!-- أحدث الحسابات -->
+<div class="card">
+    <div class="card-title">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        أحدث الحسابات المضافة
+    </div>
+    <div class="table-wrapper">
+        <table id="accounts-table">
+            <thead>
+                <tr>
+                    <th>الصورة</th>
+                    <th>اسم الحساب</th>
+                    <th>السعر</th>
+                    <th>الحالة</th>
+                    <th>تاريخ الإضافة</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if recent_accounts %}
+                    {% for acc in recent_accounts %}
+                    <tr>
+                        <td>
+                            {% if acc.image_path %}
+                                <img src="/{{ acc.image_path }}" class="acc-thumb" alt="صورة">
+                            {% else %}
+                                <div style="width:46px;height:46px;background:rgba(124,58,237,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🎮</div>
+                            {% endif %}
+                        </td>
+                        <td style="font-weight: 700;">{{ acc.title }}</td>
+                        <td><span style="color: #10b981; font-weight: 800;">{{ acc.price_egp }} ج.م</span></td>
+                        <td>
+                            <span class="badge badge-{{ acc.status }}">
+                                {% if acc.status == 'available' %}✅ متاح
+                                {% elif acc.status == 'sold' %}🔴 مباع
+                                {% elif acc.status == 'reserved' %}⏳ محجوز
+                                {% else %}{{ acc.status }}{% endif %}
+                            </span>
+                        </td>
+                        <td style="color: var(--text-muted); font-size: 0.83rem;">{{ (acc.created_at | string)[:16] if acc.created_at else '—' }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-box-open"></i>
+                                <p>لا توجد حسابات مضافة حتى الآن.</p>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% if recent_accounts %}
+    <div style="margin-top: 16px; text-align: left;">
+        <a href="/accounts" style="color: var(--primary-glow); font-size: 0.85rem; font-weight: 700; text-decoration: none;">
+            عرض الكل <i class="fa-solid fa-arrow-left" style="font-size:0.75rem;"></i>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Counter Animation
+document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target) || 0;
+    let current = 0;
+    const step = Math.max(1, Math.ceil(target / 40));
+    const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current.toLocaleString('ar');
+        if (current >= target) clearInterval(timer);
+    }, 30);
+});
+
+document.querySelectorAll('.counter-float').forEach(el => {
+    const target = parseFloat(el.dataset.target) || 0;
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        if (current >= target) clearInterval(timer);
+    }, 30);
+});
+</script>
+{% endblock %}

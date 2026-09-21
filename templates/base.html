@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RODRIGO SHOP{% endblock %}</title>
+    <meta name="description" content="لوحة إدارة متجر RODRIGO eFootball — إدارة الحسابات والطلبات وطرق الدفع">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">
+                <span class="brand-name">RODRIGO HUB</span>
+                <span class="brand-sub">eFootball Shop</span>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="/" class="{% if active_page == 'home' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    الإحصائيات
+                </a>
+            </li>
+            <li>
+                <a href="/accounts" class="{% if active_page == 'accounts' %}active{% endif %}">
+                    <i class="fa-solid fa-gamepad"></i>
+                    الحسابات والمنتجات
+                </a>
+            </li>
+            <li>
+                <a href="/orders" class="{% if active_page == 'orders' %}active{% endif %}">
+                    <i class="fa-solid fa-receipt"></i>
+                    الطلبات
+                    {% if pending_count and pending_count > 0 %}
+                        <span class="nav-badge">{{ pending_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li>
+                <a href="/payments" class="{% if active_page == 'payments' %}active{% endif %}">
+                    <i class="fa-solid fa-wallet"></i>
+                    طرق الدفع
+                </a>
+            </li>
+            <li>
+                <a href="/admins" class="{% if active_page == 'admins' %}active{% endif %}">
+                    <i class="fa-solid fa-user-shield"></i>
+                    إدارة الأدمنز
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <p>متجر <span>RODRIGO</span> eFootball</p>
+            <p style="margin-top: 4px; font-size: 0.7rem;">Dashboard v2.0</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-wrapper fade-in">
+        <div class="top-header">
+            <div class="page-title">
+                <h1>{% block page_title %}{% endblock %}</h1>
+                <p>{% block page_subtitle %}{% endblock %}</p>
+            </div>
+            <div class="header-badge">
+                <span class="dot"></span>
+                البوت يعمل
+            </div>
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

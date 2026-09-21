@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}الحسابات — RODRIGO SHOP{% endblock %}
+{% block page_title %}إدارة الحسابات{% endblock %}
+{% block page_subtitle %}إضافة وإدارة حسابات eFootball المعروضة للبيع{% endblock %}
+
+{% block content %}
+<div class="grid-2">
+
+    <!-- فورم الإضافة -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-plus-circle"></i>
+            إضافة حساب جديد
+        </div>
+        <form action="/add_account" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>عنوان الحساب / المنتج</label>
+                <input type="text" name="title" id="acc-title" placeholder="مثال: حساب ليجند 5 نجوم" required>
+            </div>
+
+            <div class="form-group">
+                <label>تفاصيل الحساب</label>
+                <textarea name="details" rows="3" placeholder="عدد اللاعبين، التقييم، المميزات..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>السعر (ج.م)</label>
+                <input type="number" step="0.01" name="price_egp" id="acc-price" placeholder="0.00" required>
+            </div>
+
+            <div class="form-group">
+                <label>البيانات السرية (للتسليم التلقائي)</label>
+                <input type="text" name="credentials" placeholder="email@example.com | Pass123" required>
+            </div>
+
+            <div class="form-group">
+                <label>صورة التشكيلة</label>
+                <div class="image-upload-box" id="upload-box" onclick="document.getElementById('image-input').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="upload-text">اسحب الصورة هنا أو اضغط للاختيار</span>
+                    <img id="preview-img" src="" alt="preview">
+                </div>
+                <input type="file" name="image" id="image-input" accept="image/*" style="display:none">
+            </div>
+
+            <button type="submit" class="btn-submit" id="submit-btn">
+                <i class="fa-solid fa-rocket"></i> نشر الحساب في المتجر
+            </button>
+        </form>
+    </div>
+
+    <!-- جدول الحسابات -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-list-ul"></i>
+            جميع الحسابات ({{ accounts|length }})
+        </div>
+
+        <div class="table-search-wrap">
+            <div class="search-icon-wrap" style="flex:1;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="table-search" placeholder="ابحث باسم الحساب...">
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="accounts-table">
+                <thead>
+                    <tr>
+                        <th>الصورة</th>
+                        <th>الاسم</th>
+                        <th>السعر</th>
+                        <th>الحالة</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for acc in accounts %}
+                    <tr>
+                        <td>
+                            {% if acc.image_path %}
+                                <img src="/{{ acc.image_path }}" class="acc-thumb" alt="صورة">
+                            {% else %}
+                                <div style="width:46px;height:46px;background:rgba(124,58,237,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">🎮</div>
+                            {% endif %}
+                        </td>
+                        <td style="font-weight: 700; max-width: 180px;">{{ acc.title }}</td>
+                        <td><span style="color: #10b981; font-weight: 800;">{{ acc.price_egp }} ج.م</span></td>
+                        <td>
+                            <span class="badge badge-{{ acc.status }}">
+                                {% if acc.status == 'available' %}✅ متاح
+                                {% elif acc.status == 'sold' %}🔴 مباع
+                                {% elif acc.status == 'reserved' %}⏳ محجوز
+                                {% else %}{{ acc.status }}{% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/delete_account/{{ acc.id }}"
+                               class="btn-delete"
+                               onclick="return confirm('هل تريد حذف هذا الحساب؟')">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-box-open"></i>
+                                <p>لا توجد حسابات مضافة بعد.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}طرق الدفع — RODRIGO SHOP{% endblock %}
+{% block page_title %}طرق الدفع{% endblock %}
+{% block page_subtitle %}إدارة أرقام وحسابات التحويل المعتمدة{% endblock %}
+
+{% block content %}
+<div class="grid-2">
+
+    <!-- فورم الإضافة -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-plus"></i>
+            إضافة طريقة دفع
+        </div>
+        <form action="/add_payment" method="POST">
+
+            <div class="form-group">
+                <label>نوع الوسيلة</label>
+                <select name="method_type" id="method-select">
+                    <option value="vodafone">📱 فودافون كاش / المحافظ</option>
+                    <option value="instapay">🏦 InstaPay</option>
+                    <option value="bank_card">💳 بطاقة بنكية / ميزة</option>
+                    <option value="iraq">🌐 آسيا سيل / زين كاش (العراق)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>عنوان / وصف الحساب</label>
+                <input type="text" name="provider_title" placeholder="مثال: فودافون كاش الرئيسي" required>
+            </div>
+
+            <div class="form-group">
+                <label>الرقم أو الحساب</label>
+                <input type="text" name="details" placeholder="01xxxxxxxxx" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fa-solid fa-plus"></i> إضافة الوسيلة
+            </button>
+        </form>
+    </div>
+
+    <!-- جدول وسائل الدفع -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-credit-card"></i>
+            وسائل الدفع المعتمدة ({{ payment_methods|length }})
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>النوع</th>
+                        <th>العنوان</th>
+                        <th>الرقم / الحساب</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pm in payment_methods %}
+                    <tr>
+                        <td>
+                            <span class="badge badge-type">
+                                {% if pm.method_type == 'vodafone' %}📱 فودافون
+                                {% elif pm.method_type == 'instapay' %}🏦 InstaPay
+                                {% elif pm.method_type == 'bank_card' %}💳 بطاقة
+                                {% elif pm.method_type == 'iraq' %}🌐 عراق
+                                {% else %}{{ pm.method_type }}{% endif %}
+                            </span>
+                        </td>
+                        <td style="font-weight: 700;">{{ pm.provider_title }}</td>
+                        <td><code>{{ pm.details }}</code></td>
+                        <td>
+                            <a href="/delete_payment/{{ pm.id }}"
+                               class="btn-delete"
+                               onclick="return confirm('هل تريد حذف هذه الوسيلة؟')">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <p>لا توجد وسائل دفع مضافة بعد.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}الأدمنز — RODRIGO SHOP{% endblock %}
+{% block page_title %}إدارة الأدمنز{% endblock %}
+{% block page_subtitle %}إضافة وإدارة أدمنز البوت الذين يستقبلون طلبات الشراء{% endblock %}
+
+{% block content %}
+<div class="grid-2">
+
+    <!-- فورم الإضافة -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-user-plus"></i>
+            إضافة أدمن جديد
+        </div>
+        <form action="/add_admin" method="POST">
+
+            <div class="form-group">
+                <label>Telegram ID (الرقم العددي)</label>
+                <input type="number" name="telegram_id" placeholder="123456789" required>
+            </div>
+
+            <div class="form-group">
+                <label>الاسم</label>
+                <input type="text" name="name" placeholder="اسم الأدمن" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fa-solid fa-user-shield"></i> إضافة الأدمن
+            </button>
+        </form>
+
+        <div class="card" style="margin-top: 20px; background: rgba(124, 58, 237, 0.06); border-color: rgba(124, 58, 237, 0.25);">
+            <div style="font-size: 0.85rem; color: var(--text-soft); line-height: 1.8;">
+                <i class="fa-solid fa-circle-info" style="color: var(--cyan);"></i>
+                <strong>كيف تحصل على Telegram ID؟</strong><br>
+                ابعت رسالة لبوت <code>@userinfobot</code> على تلجرام وهيبعتلك ID الخاص بيك.
+            </div>
+        </div>
+    </div>
+
+    <!-- جدول الأدمنز -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fa-solid fa-users-gear"></i>
+            الأدمنز المسجلون ({{ admins|length }})
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>Telegram ID</th>
+                        <th>إجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admin in admins %}
+                    <tr>
+                        <td style="color: var(--text-muted);">{{ loop.index }}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;">
+                                    {{ admin.name[0] if admin.name else '?' }}
+                                </div>
+                                <span style="font-weight: 700;">{{ admin.name }}</span>
+                            </div>
+                        </td>
+                        <td><code>{{ admin.telegram_id }}</code></td>
+                        <td>
+                            <a href="/delete_admin/{{ admin.id }}"
+                               class="btn-delete"
+                               onclick="return confirm('هل تريد إزالة هذا الأدمن؟')">
+                                <i class="fa-solid fa-user-minus"></i> إزالة
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-user-shield"></i>
+                                <p>لا يوجد أدمنز مسجلون في قاعدة البيانات.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+# Database (يتعمل تلقائياً على السيرفر)
+shop.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Virtual Environments
+venv/
+env/
+.env/
+
+# Uploads (الصور المرفوعة)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
